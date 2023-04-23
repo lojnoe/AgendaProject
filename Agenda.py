@@ -1,10 +1,10 @@
 import pymongo
-
 class Agenda:
     def __init__(self,cliente,nombre_bd,nombre_collection):
         self.cliente = cliente
         self.db = cliente[nombre_bd]
         self.collection = self.db[nombre_collection]
+        self.contactos=[]
 
     def insertar_contacto(self,nombre,apellido,email,telefono):
         collection = self.collection
@@ -14,6 +14,7 @@ class Agenda:
             'email':email,
             'telefono':telefono
         })
+        contactos.append(nombre,apellido,email,telefono)
         result = collection.find_one({'nombre':nombre,'apellido':apellido,'email':email,'telefono':telefono})
         return result
     def buscar(self,telefono):
@@ -39,6 +40,7 @@ class Agenda:
 
 cliente = pymongo.MongoClient("mongodb://localhost:27017/")
 agenda = Agenda(cliente, 'Agenda', 'Contactos')
+contactos = []
 while True:
     print("------------------------")
     print("1. Buscar")
@@ -64,6 +66,7 @@ while True:
         result = agenda.insertar_contacto(nombre,apellido,email,telefono)
         if result:
             agenda.visionado_contacto(result)
+            
             print("Contacto  añadido correctamente")
         else:
             print("Contacto no añadido correctamente")
@@ -85,5 +88,6 @@ while True:
         else:
             print("Contacto no actualizado")
     elif opcion == 5:
+        print(contactos)
         break
     
