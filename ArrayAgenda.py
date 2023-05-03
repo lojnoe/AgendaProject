@@ -2,21 +2,23 @@ class Agenda:
     def __init__(self):
         self.contactos=[]
 
-    def insertar_contacto(self,nombre,apellido,email,telefono):
-        self.contactos.append(nombre,apellido,email,telefono)
-        return result
+    def insertar_contacto(self,contacto):
+        self.contactos.append(contacto)
+        
     def buscar(self,telefono):
         for contacto in self.contactos:
-            if contacto['telefono'] == telefono:
+            if contacto.telefono == telefono:
                 return contacto
         return None
 
     def eliminar_contacto(self,nombre,apellido): 
-        for contacto in self.contactos:
-            if contacto['nombre'] == nombre and contacto['apellido'] == apellido:
-                self.contactos.remove(contacto)
-                return True
-        return False
+        contacto = self.buscar(nombre)
+        if contacto:
+            self.contactos.remove(contacto)
+            print(f"Contacto {nombre} eliminado de la agenda.")
+        else:
+            print("Contacto no encontrado.")
+
     def actualizar_contacto(self,email,telefono):
         for contacto in self.contactos:
             if contacto['email'] == email and contacto['telefono'] == telefono:
@@ -24,17 +26,23 @@ class Agenda:
                 return True
         return False
         
-    def visionado_contacto(self):
-        for contacto in self.contactos:
-            if contacto['estado'] == 'visionado':
-                print("Nombre: ",contacto['nombre'])
-                print("Apellido: ",contacto['apellido'])
-                print("Email: ",contacto['email'])
-                print("Telefono: ",contacto['telefono'])
-                print("-----------------------")
-                return True
-        return False
-    
+    def visionado_contacto(self,telefono):
+        contacto = self.buscar_contacto(nombre)
+        if contacto:
+            print(f"Nombre: {contacto.nombre}")
+            print(f"Teléfono: {contacto.telefono}")
+            print(f"Email: {contacto.email}")
+        else:
+            print("Contacto no encontrado.")
+
+class contacto:
+    def __init__(self,nombre,apellido,email,telefono):
+        self.nombre = ""
+        self.apellido = ""
+        self.email = ""
+        self.telefono = ""
+        self.estado = "visionado"
+
 
 agenda = Agenda()
 while True:
@@ -48,21 +56,15 @@ while True:
     opcion = int(input("Ingrese una opcion del 1 al 5: "))
     if opcion == 1:
         telefono = input("Ingrese telefono: ")
-        result = agenda.buscar(telefono)
-        if result:
-           agenda.visionado_contacto(result)
-           print("Contacto encontrado")
-        else:
-            print("Contacto no encontrado")
+        agenda.buscar(telefono)
+        
     elif opcion == 2:
         nombre = input("Ingrese nombre: ")
         apellido = input("Ingrese apellido: ")
         email = input("Ingrese email: ")
         telefono = input("Ingrese telefono: ")
-        result = agenda.insertar_contacto(nombre,apellido,email,telefono)
-        if result:
-            agenda.visionado_contacto(result)
-            
+        contacto1 = contacto(nombre,apellido,email,telefono)
+        if contacto1:
             print("Contacto  añadido correctamente")
         else:
             print("Contacto no añadido correctamente")
@@ -84,6 +86,6 @@ while True:
         else:
             print("Contacto no actualizado")
     elif opcion == 5:
-        print(contactos)
+        
         break
     
