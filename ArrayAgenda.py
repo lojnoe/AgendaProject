@@ -14,17 +14,17 @@ class Agenda:
                 
        
 
-    def eliminar_contacto(self,nombre): 
+    def eliminar_contacto(self,nombre,apellido): 
         for contacto in self.contactos:
-            if contacto[0] == telefono:
+            if contacto[0] == nombre and contacto[1] == apellido:
                 self.contactos.remove(contacto)
                 print("Contacto eliminado correctamente.")
             else:
                 print("Contacto no encontrado.")
 
-    def actualizar_contacto(self,nombre,email,telefono):
+    def actualizar_contacto(self,nombre,apellido,email,telefono):
         for contacto in self.contactos:
-            if contacto[0] == nombre:
+            if contacto[0] == nombre and contacto[1] == apellido:
                 contacto[2] = email
                 contacto[3] = telefono
                 print ("Contacto actualizado correctamente")
@@ -59,9 +59,8 @@ while True:
         nombre = input("Ingrese nombre: ")
         email = input("Ingrese email: ")
         telefono = input("Ingrese telefono: ")
-        agenda.actualizar_contacto(nombre,email,telefono)
+        agenda.actualizar_contacto(nombre,apellido,email,telefono)
         agenda.buscar(nombre)
     elif opcion == 5:
-        
         break
     
