@@ -2,47 +2,32 @@ class Agenda:
     def __init__(self):
         self.contactos=[]
 
-    def insertar_contacto(self,contacto):
-        self.contactos.append(contacto)
+    def insertar_contacto(self,nombre,apellido,email,telefono):
+        self.contactos.append([nombre,apellido,email,telefono])
         
-    def buscar(self,telefono):
+    def buscar(self,nombre):
         for contacto in self.contactos:
-            if contacto.telefono == telefono:
-                return contacto
-        return None
+            if contacto[0] == nombre:
+                print(contacto)
+            else:
+                print("Contacto no encontrado.")
+                
+       
 
-    def eliminar_contacto(self,nombre,apellido): 
-        contacto = self.buscar(nombre)
-        if contacto:
-            self.contactos.remove(contacto)
-            print(f"Contacto {nombre} eliminado de la agenda.")
-        else:
-            print("Contacto no encontrado.")
-
-    def actualizar_contacto(self,email,telefono):
+    def eliminar_contacto(self,nombre): 
         for contacto in self.contactos:
-            if contacto['email'] == email and contacto['telefono'] == telefono:
-                self.contactos[self.contactos.index(contacto)] = {'nombre':nombre,'apellido':apellido,'email':email,'telefono':telefono}
-                return True
-        return False
-        
-    def visionado_contacto(self,telefono):
-        contacto = self.buscar_contacto(nombre)
-        if contacto:
-            print(f"Nombre: {contacto.nombre}")
-            print(f"Teléfono: {contacto.telefono}")
-            print(f"Email: {contacto.email}")
-        else:
-            print("Contacto no encontrado.")
+            if contacto[0] == telefono:
+                self.contactos.remove(contacto)
+                print("Contacto eliminado correctamente.")
+            else:
+                print("Contacto no encontrado.")
 
-class contacto:
-    def __init__(self,nombre,apellido,email,telefono):
-        self.nombre = ""
-        self.apellido = ""
-        self.email = ""
-        self.telefono = ""
-        self.estado = "visionado"
-
+    def actualizar_contacto(self,nombre,email,telefono):
+        for contacto in self.contactos:
+            if contacto[0] == nombre:
+                contacto[2] = email
+                contacto[3] = telefono
+                print ("Contacto actualizado correctamente")
 
 agenda = Agenda()
 while True:
@@ -55,36 +40,27 @@ while True:
     print("------------------------")
     opcion = int(input("Ingrese una opcion del 1 al 5: "))
     if opcion == 1:
-        telefono = input("Ingrese telefono: ")
-        agenda.buscar(telefono)
+        nombre = input("Ingrese nombre: ")
+        agenda.buscar(nombre)
         
     elif opcion == 2:
         nombre = input("Ingrese nombre: ")
         apellido = input("Ingrese apellido: ")
         email = input("Ingrese email: ")
         telefono = input("Ingrese telefono: ")
-        contacto1 = contacto(nombre,apellido,email,telefono)
-        if contacto1:
-            print("Contacto  añadido correctamente")
-        else:
-            print("Contacto no añadido correctamente")
+        agenda.insertar_contacto(nombre,apellido,email,telefono)
+        agenda.buscar(nombre)
     elif opcion == 3:
         nombre = input("Ingrese nombre: ")
         apellido = input("Ingrese apellido: ")
         agenda.eliminar_contacto(nombre,apellido)
         print("Contacto eliminado correctamente")
     elif opcion == 4:
+        nombre = input("Ingrese nombre: ")
+        email = input("Ingrese email: ")
         telefono = input("Ingrese telefono: ")
-        result=agenda.buscar(telefono)
-        agenda.visionado_contacto(result)
-        respuesta = input("��Desea actualizar el contacto? (S/N): ")
-        if respuesta == "S" or "s":
-            email = input("Ingrese email: ")
-            telefono = input("Ingrese telefono: ")
-            agenda.actualizar_contacto(email,telefono)
-            print("Contacto actualizado")
-        else:
-            print("Contacto no actualizado")
+        agenda.actualizar_contacto(nombre,email,telefono)
+        agenda.buscar(nombre)
     elif opcion == 5:
         
         break
