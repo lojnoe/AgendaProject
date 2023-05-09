@@ -4,7 +4,7 @@ class Agenda:
         self.cliente = cliente
         self.db = cliente[nombre_bd]
         self.collection = self.db[nombre_collection]
-        self.contactos=[]
+        
 
     def insertar_contacto(self,nombre,apellido,email,telefono):
         collection = self.collection
@@ -14,19 +14,18 @@ class Agenda:
             'email':email,
             'telefono':telefono
         })
-        contactos.append(nombre,apellido,email,telefono)
         result = collection.find_one({'nombre':nombre,'apellido':apellido,'email':email,'telefono':telefono})
         return result
-    def buscar(self,telefono):
+    def buscar(self,nombre):
         collection = self.collection
-        result = collection.find_one({'telefono':telefono})
+        result = collection.find_one({'nombre':nombre})
         return result
     def eliminar_contacto(self,nombre,apellido): 
         collection = self.collection
         collection.delete_one({'nombre':nombre,'apellido':apellido})
-    def actualizar_contacto(self,email,telefono):
+    def actualizar_contacto(self,nombre,email,telefono):
         collection = self.collection
-        collection.update_one({'telefono':telefono},{'$set':{'email':email,'telefono':telefono}})
+        collection.update_one({'nombre':nombre},{'$set':{'email':email,'telefono':telefono}})
     def visionado_contacto(self,result):
         collection = self.collection
         print("-------RESULTADO------")
@@ -51,8 +50,8 @@ while True:
     print("------------------------")
     opcion = int(input("Ingrese una opcion del 1 al 5: "))
     if opcion == 1:
-        telefono = input("Ingrese telefono: ")
-        result = agenda.buscar(telefono)
+        nombre = input("Ingrese nombre: ")
+        result = agenda.buscar(nombre)
         if result:
            agenda.visionado_contacto(result)
            print("Contacto encontrado")
@@ -76,15 +75,17 @@ while True:
         agenda.eliminar_contacto(nombre,apellido)
         print("Contacto eliminado correctamente")
     elif opcion == 4:
-        telefono = input("Ingrese telefono: ")
-        result=agenda.buscar(telefono)
+        nombre = input("Ingrese nombre: ")
+        result=agenda.buscar(nombre)
         agenda.visionado_contacto(result)
         respuesta = input("��Desea actualizar el contacto? (S/N): ")
         if respuesta == "S" or "s":
             email = input("Ingrese email: ")
             telefono = input("Ingrese telefono: ")
-            agenda.actualizar_contacto(email,telefono)
+            agenda.actualizar_contacto(nombre,email,telefono)
             print("Contacto actualizado")
+            result=agenda.buscar(nombre)
+            agenda.visionado_contacto(result)
         else:
             print("Contacto no actualizado")
     elif opcion == 5:
